@@ -1,0 +1,98 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(180deg, #0057b8 0%, #003b7d 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.contenedor {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tarjeta {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.marca {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #e4002b;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.etiqueta {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.valor {
+  font-size: 56px;
+  font-weight: 800;
+  color: #0057b8;
+  line-height: 1.1;
+}
+
+.subvalor {
+  font-size: 14px;
+  color: #999;
+  margin-bottom: 16px;
+}
+
+.fecha {
+  font-size: 13px;
+  color: #555;
+}
+
+.vigencia {
+  font-size: 11px;
+  color: #999;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+.historial {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 16px 20px;
+}
+
+.historial-titulo {
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  opacity: 0.85;
+}
+
+.historial-fila {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  font-size: 14px;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.historial-valor {
+  font-weight: 700;
+}

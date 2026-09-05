@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model TipoCambio {
+  id        Int      @id @default(autoincrement())
+  valor     Float // Bs por 1 USD
+  fecha     DateTime @default(now())
+  fuente    String   @default("BCB")
+  vigencia  String? // texto crudo, ej: "VIGENTE PARA EL SÁBADO 5, DOMINGO 6 Y LUNES 7 DE SEPTIEMBRE, 2026"
+
+  @@index([fecha])
+}
