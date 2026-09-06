@@ -1,6 +1,8 @@
 const net = require("net");
 const dns = require("dns").promises;
 
+export const dynamic = "force-dynamic";
+
 async function GET() {
   const host = "tramway.proxy.rlwy.net";
   const port = 25900;
@@ -26,11 +28,12 @@ async function GET() {
   });
 
   return Response.json({
-    db_url_prefix: url.substring(0, 30),
+    db_url_prefix: url.substring(0, 40),
     db_url_length: url.length,
     db_url_starts_ok: url.startsWith("postgresql://"),
     dns: dnsResult,
     tcp: tcpResult,
+    ts: new Date().toISOString(),
   });
 }
 
