@@ -1,23 +1,21 @@
-const net = require("net");
-const dns = require("dns").promises;
+import net from "net";
+import dns from "dns/promises";
 
 export const dynamic = "force-dynamic";
 
-async function GET() {
+export async function GET() {
   const host = "tramway.proxy.rlwy.net";
   const port = 25900;
   const url = process.env.DATABASE_URL || "NO DEFINIDA";
 
-  // Test DNS resolution
   let dnsResult = null;
   try {
-    const addrs = await dns.lookup(host);
-    dnsResult = addrs.address;
+    const addr = await dns.lookup(host);
+    dnsResult = addr.address;
   } catch (e) {
     dnsResult = `ERROR: ${e.message}`;
   }
 
-  // Test TCP connection
   const tcpResult = await new Promise((resolve) => {
     const socket = new net.Socket();
     socket.setTimeout(8000);
@@ -36,5 +34,3 @@ async function GET() {
     ts: new Date().toISOString(),
   });
 }
-
-module.exports = { GET };
