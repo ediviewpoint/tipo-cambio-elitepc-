@@ -2,38 +2,28 @@ import { PrismaClient } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  const url = process.env.DATABASE_URL || "NO DEFINIDA";
-
-  // Test Prisma sin SSL extra
-  let sinSsl = null;
+async function testUrl(url) {
   try {
     const c = new PrismaClient({ datasources: { db: { url } } });
     await c.$connect();
     const count = await c.tipoCambio.count();
     await c.$disconnect();
-    sinSsl = `OK - ${count} registros`;
+    return `OK - ${count} registros`;
   } catch (e) {
-    sinSsl = `ERROR: ${e.message.slice(0, 120)}`;
+    return `ERROR: ${e.message.slice(0, 150)}`;
   }
+}
 
-  // Test Prisma CON sslmode=require
-  const urlSsl = url.includes("?") ? url + "&sslmode=require" : url + "?sslmode=require";
-  let conSsl = null;
-  try {
-    const c2 = new PrismaClient({ datasources: { db: { url: urlSsl } } });
-    await c2.$connect();
-    const count2 = await c2.tipoCambio.count();
-    await c2.$disconnect();
-    conSsl = `OK - ${count2} registros`;
-  } catch (e) {
-    conSsl = `ERROR: ${e.message.slice(0, 120)}`;
-  }
+export async function GET() {
+  const base = process.env.DATABASE_URL || "NO DEFINIDA";
 
-  return Response.json({
-    db_url_length: url.length,
-    sin_ssl: sinSsl,
-    con_ssl: conSsl,
+  const results = {
+    db_url_length: base.length,
     ts: new Date().toISOString(),
-  });
+    disable: await testUrl(base + "?sslmode=disable"),
+    allow: await testUrl(base + "?sslmode=allow"),
+    prefer: await testUrl(base + "?sslmode=prefer"),
+  };
+
+  return Response.json(results);
 }
