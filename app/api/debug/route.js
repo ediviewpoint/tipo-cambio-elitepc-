@@ -1,5 +1,6 @@
 import net from "net";
 import dns from "dns/promises";
+import { PrismaClient } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
@@ -25,12 +26,24 @@ export async function GET() {
     socket.connect(port, host);
   });
 
+  // Test Prisma connection directly
+  let prismaResult = null;
+  try {
+    const client = new PrismaClient({ datasources: { db: { url } } });
+    await client.$connect();
+    const count = await client.tipoCambio.count();
+    await client.$disconnect();
+    prismaResult = `OK - ${count} registros`;
+  } catch (e) {
+    prismaResult = `ERROR: ${e.message}`;
+  }
+
   return Response.json({
-    db_url_prefix: url.substring(0, 40),
     db_url_length: url.length,
-    db_url_starts_ok: url.startsWith("postgresql://"),
+    db_url_has_ssl: url.includes("sslmode"),
     dns: dnsResult,
     tcp: tcpResult,
+    prisma: prismaResult,
     ts: new Date().toISOString(),
   });
 }
